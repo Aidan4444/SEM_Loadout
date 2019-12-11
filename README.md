@@ -10,4 +10,5 @@ Everything accessible through the resource/locations can be changed in the confi
 Current Version: **v1.0**
 
 Support/Discord: https://semdevelopment.com/discord
+
 Information/Instructions: https://semdevelopment.com/releases/loadout
