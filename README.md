@@ -5,6 +5,8 @@ This resource allows for LEO & Fire to spawn Peds, Weapons and Vehicles via loca
 
 Everything accessible through the resource/locations can be changed in the config file, even down to the components being addedd to the weapons.
 
+SEM_Loadout was created using NativeUI [LUA]
+
 
 ### Information:
 Current Version: **v1.0**
