@@ -11,7 +11,7 @@ SEM_Loadout was created using NativeUI [LUA]
 ### Information:
 Current Version: **v1.1**
 
-Changes: **Improved Menu, Added Jail Functions & Updated Config FIle**
+Changes: **Improved Menu, Added Jail Functions & Updated Config File**
 
 Support/Discord: https://semdevelopment.com/discord
 
