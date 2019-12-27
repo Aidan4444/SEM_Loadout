@@ -2,7 +2,7 @@
 ───────────────────────────────────────────────────────────────
 
 	SEM_Loadout (config.lua) - Created by Scott M
-	Current Version: v1.0 (Dec 2019)
+	Current Version: v1.1 (Dec 2019)
 	
 	Support: https://semdevelopment.com/discord
 
@@ -15,8 +15,13 @@ Config = {}
 
 
 --This determines what will be the button to open the menus
---Default = 38
+--Default 38 [E]  |  To change the button check out https://docs.fivem.net/game-references/controls/
+--!!!CONTROLER SUPPORT IS DISABLED!!!
 Config.Button = 38
+
+--This determines what button will be shown in the help text
+--Default ~INPUT_PICKUP~  |  To change the button check out https://docs.fivem.net/game-references/controls/
+Config.ButtonHelp = 'INPUT_PICKUP'
 
 --This determines what color the markers will be
 --Default = [255, 255, 255, 150]
@@ -28,7 +33,7 @@ Config.Size = {w = 1.15, h = 0.40}
 
 --This determines how close you need to be for the marker to be displayed
 --Default = 10
-Config.DisplayDistance = 10
+Config.DisplayDistance = 25
 
 
 
@@ -73,7 +78,7 @@ Config.ArmouryLocations = {
 	Weapon Components   https://wiki.rage.mp/index.php?title=Weapons_Components
 ]]
 Config.ArmouryContents = {
-	Standard = {
+	['Standard'] = {
 		{weapon = 'weapon_flashlight', components = {''}},
 		{weapon = 'weapon_combatpistol', components = {'component_at_pi_flsh'}},
 		{weapon = 'weapon_stungun', components = {''}},
@@ -83,7 +88,7 @@ Config.ArmouryContents = {
 		{weapon = 'weapon_flare', components = {''}},
 	},
 
-	SWAT = {
+	['SWAT'] = {
 		{weapon = 'weapon_flashlight', components = {''}},
 		{weapon = 'weapon_combatpistol', components = {'component_at_pi_flsh'}},
 		{weapon = 'weapon_stungun', components = {''}},
@@ -141,18 +146,18 @@ Config.GarageLocations = {
 	'c' is any extras which you would like added by default, these are numbers
 ]]
 Config.GarageContents = {
-	LSPD = {
+	['LSPD'] = {
 		{name = 'Police', spawncode = 'police', extras = {1}},
 		{name = 'Police', spawncode = 'police2', extras = {12}},
 		{name = 'Police', spawncode = 'police3', extras = {1, 12}},
 	},
 
-	BCSO = {
+	['BCSO'] = {
 		{name = 'Sheriff', spawncode = 'sheriff', extras = {1}},
 		{name = 'Sheriff', spawncode = 'sheriff2', extras = {12}},
 	},
 
-	Unmarked = {
+	['Unmarked'] = {
 		{name = 'Unmarked', spawncode = 'police4', extras = {1}},
 	}
 }
@@ -166,6 +171,26 @@ Config.DisplayVehicleDeleters = true
 --You can use the '/coords' command to get the coordinates
 Config.VehicleDeleterLocations = {
 	{x = 1870.62, y = 3701.60, z = 33.34} --Sandy Shores
+}
+
+
+
+--This determines if the jail locations are displayed
+Config.DisplayJail = true
+
+--This determines what the lowest and highest time someone can be jailed for
+--Default Time | Min = 30  &  Max = 300
+--If you wouldn't like any limits put 0
+Config.JailTimes = {
+	Min = 30,
+	Max = 300,
+}
+
+--This determines where the jail markers are located
+--You can use the '/coords' command to get the coordinates
+Config.JailLocations = {
+	{x = 1792.69, y = 2593.67, z = 45.79}, --Prison
+	{x = 1853.05, y = 3689.45, z = 34.26}, --Sandy Shores
 }
 
 
@@ -199,7 +224,7 @@ Config.LoadoutLocations = {
 	Weapon Name   https://forum.fivem.net/t/list-of-weapon-spawn-names-after-hours/90750
 ]]
 Config.LoadoutContents = {
-	Fire = {
+	['Fire'] = {
 		{uniform = 's_m_y_fireman_01'},
 
 		{weapon = 'weapon_knife'},

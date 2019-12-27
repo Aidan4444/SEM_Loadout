@@ -2,7 +2,7 @@
 ─────────────────────────────────────────────────────────────────
 
 	SEM_Loadout (functions.lua) - Created by Scott M
-	Current Version: v1.0 (Dec 2019)
+	Current Version: v1.1 (Dec 2019)
 	
 	Support: https://semdevelopment.com/discord
 	
@@ -24,6 +24,27 @@ function NotifyHelp(Text)
 	SetTextComponentFormat('STRING')
 	AddTextComponentString(Text)
     DisplayHelpTextFromStringLabel(0, 0, 1, -1)
+end
+
+function KeyboardInput(TextEntry, MaxStringLenght)
+	AddTextEntry('FMMC_KEY_TIP1', TextEntry)
+	DisplayOnscreenKeyboard(1, 'FMMC_KEY_TIP1', '', '', '', '', '', MaxStringLenght)
+	BlockInput = true
+
+	while UpdateOnscreenKeyboard() ~= 1 and UpdateOnscreenKeyboard() ~= 2 do
+		Citizen.Wait(0)
+	end
+		
+	if UpdateOnscreenKeyboard() ~= 2 then
+		local Result = GetOnscreenKeyboardResult()
+		Citizen.Wait(500)
+		BlockInput = false
+		return Result
+	else
+		Citizen.Wait(500)
+		BlockInput = false
+		return nil
+	end
 end
 
 function Marker(x, y, z)
@@ -75,7 +96,7 @@ function SpawnVehicle(Veh, Name, Extras, x, y, z, h)
         end
     end
     local Vehicle = CreateVehicle(Model, x, y, z + 1, h, true, false)
-    --SetPedIntoVehicle(PlayerPedId(), Vehicle, -1)
+    SetPedIntoVehicle(PlayerPedId(), Vehicle, -1)
     SetEntityAsNoLongerNeeded(Vehicle)
     SetModelAsNoLongerNeeded(Vehicle)
     SetVehicleDirtLevel(Vehicle, 0)

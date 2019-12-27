@@ -2,7 +2,7 @@
 ──────────────────────────────────────────────────────────────
 
 	SEM_Loadout (client.lua) - Created by Scott M
-	Current Version: v1.0 (Dec 2019)
+	Current Version: v1.1 (Dec 2019)
 	
 	Support: https://semdevelopment.com/discord
 	
@@ -26,7 +26,7 @@ Citizen.CreateThread(function()
 						Marker(Location.x, Location.y, Location.z - 1)
 					
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  0.75) then
-							NotifyHelp('~b~Armoury~w~, Press ~INPUT_PICKUP~ to Access')
+							NotifyHelp('~b~Armoury~w~, Press ' .. Config.ButtonHelp ..' to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -57,6 +57,7 @@ Citizen.CreateThread(function()
 								end
 
 								ArmouryMenu:Visible(not ArmouryMenu:Visible())
+								_MenuPool:RefreshIndex()
 							end
 						end
 					end
@@ -71,7 +72,7 @@ Citizen.CreateThread(function()
 						Marker(Location.x, Location.y, Location.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  0.75) then
-							NotifyHelp('~b~Locker Room~w~, Press ~INPUT_PICKUP~ to Access')
+							NotifyHelp('~b~Locker Room~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -96,6 +97,7 @@ Citizen.CreateThread(function()
 								end
 
 								LockerMenu:Visible(not LockerMenu:Visible())
+								_MenuPool:RefreshIndex()
 							end
 						end
 					end
@@ -110,7 +112,7 @@ Citizen.CreateThread(function()
 						Marker(Location.Marker.x, Location.Marker.y, Location.Marker.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.Marker.x, Location.Marker.y, Location.Marker.z - 1) <  0.75) then
-							NotifyHelp('~b~Garage~w~, Press ~INPUT_PICKUP~ to Access')
+							NotifyHelp('~b~Garage~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -129,11 +131,13 @@ Citizen.CreateThread(function()
 										GarageSubMenu:AddItem(GarageItem)
 										GarageItem.Activated = function(ParentMenu, SelectedItem)
 											SpawnVehicle(Vehicle.spawncode, Vehicle.name, Vehicle.extras, Location.Spawn.x, Location.Spawn.y, Location.Spawn.z, Location.Spawn.h)
+											_MenuPool:CloseAllMenus()
 										end
 									end
 								end
 
 								GarageMenu:Visible(not GarageMenu:Visible())
+								_MenuPool:RefreshIndex()
 							end
 						end
 					end
@@ -144,11 +148,11 @@ Citizen.CreateThread(function()
 
 			if Config.DisplayVehicleDeleters then
 				for _, Location in pairs(Config.VehicleDeleterLocations) do
-					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance) then
+					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance * 2) then
 						Marker(Location.x, Location.y, Location.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
-							NotifyHelp('~b~Delete Vehicle~w~, Press ~INPUT_PICKUP~ to Delete')
+							NotifyHelp('~b~Delete Vehicle~w~, Press ~' .. Config.ButtonHelp .. '~ to Delete')
 
 							if IsPedInAnyVehicle(PlayerPedId()) then
 
@@ -169,8 +173,66 @@ Citizen.CreateThread(function()
 										end 
 									end
 								end
+							end
+						end
+					end
+				end
+			end
 
-								Notify('You need to be in a vehicle!')
+
+
+			if Config.DisplayJail then
+				for _, Location in pairs(Config.JailLocations) do
+					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance) then
+						Marker(Location.x, Location.y, Location.z - 1)
+						
+						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
+							NotifyHelp('~b~Jail~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
+
+							if IsControlJustReleased(1, Config.Button) then
+								local ID = 0
+								local RawID = KeyboardInput('Player ID:', 5)
+								if RawID == nil or RawID == '' then
+									Notify('~r~No ID Provided!')
+									break
+								else
+									ID = tonumber(RawID)
+								end
+								
+								
+								
+								if Config.JailTimes.Min == 0 then
+									JailMinTime = 'None'
+								end
+								if Config.JailTimes.Max == 0 then
+									JailMaxTime = 'None'
+								end
+								local Time = 0
+								local RawTime = KeyboardInput('Time: (Seconds) - Max Time: ' .. Config.JailTimes.Max .. ' | Default Time: ' .. Config.JailTimes.Min)
+								if RawTime == nil or RawTime == '' then
+									Notify('~r~No Time Specified - Default Time Used')
+									Time = Config.JailTimes.Min
+								elseif tonumber(RawTime) > Config.JailTimes.Max then
+									Notify('~y~Exceeded Max Time\nMax Time: ' .. Config.JailTimes.Max .. '\n\n~g~Jail Time = ' .. Config.JailTimes.Max)
+									Time = Config.JailTimes.Max
+								else
+									Time = tonumber(RawTime)
+								end
+								
+								
+								
+								local Reason = ''
+								local RawReason = KeyboardInput('Reason:', 256)
+								if RawReason == nil or RawReason == '' then
+									Notify('~r~No Reason Specified!')
+									Reason = 'None Specified'
+								else
+									Reason = RawReason
+								end
+								
+								
+								
+								TriggerServerEvent('SEM_Jail', ID, Time, Reason)
 							end
 						end
 					end
@@ -178,6 +240,12 @@ Citizen.CreateThread(function()
 			end
 		end
 
+		
+		
+		
+		
+		
+		
 
 
 		if Config.FireMarkers then
@@ -187,7 +255,7 @@ Citizen.CreateThread(function()
 						Marker(Location.x, Location.y, Location.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
-							NotifyHelp('~b~Equipment & Uniforms~w~, Press ~INPUT_PICKUP~ to Access')
+							NotifyHelp('~b~Equipment & Uniforms~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -221,6 +289,7 @@ Citizen.CreateThread(function()
 								end
 
 								EquipmentMenu:Visible(not EquipmentMenu:Visible())
+								_MenuPool:RefreshIndex()
 							end
 						end
 					end
@@ -233,7 +302,7 @@ Citizen.CreateThread(function()
 						Marker(Location.Marker.x, Location.Marker.y, Location.Marker.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.Marker.x, Location.Marker.y, Location.Marker.z - 1) <  0.75) then
-							NotifyHelp('~b~Garage~w~, Press ~INPUT_PICKUP~ to Access')
+							NotifyHelp('~b~Garage~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -248,10 +317,12 @@ Citizen.CreateThread(function()
 									GarageMenu:AddItem(GarageItem)
 									GarageItem.Activated = function(ParentMenu, SelectedItem)
 										SpawnVehicle(Vehicle.spawncode, Vehicle.name, Vehicle.extras, Location.Spawn.x, Location.Spawn.y, Location.Spawn.z, Location.Spawn.h)
+										_MenuPool:CloseAllMenus()
 									end
 								end
 
 								GarageMenu:Visible(not GarageMenu:Visible())
+								_MenuPool:RefreshIndex()
 							end
 						end
 					end
@@ -263,11 +334,61 @@ end)
 
 
 
+local CurrentlyJailed = false
+local OriginalJailTime = 0
+
+RegisterNetEvent('SEM_JailPlayer')
+AddEventHandler('SEM_JailPlayer', function(ID, Time, Reason)
+	if CurrentlyJailed then
+		return
+	end
+	
+	OriginalJailTime = Time
+	
+	local Player = GetPlayerPed(-1)
+	if DoesEntityExist(Player) then
+		Citizen.CreateThread(function()
+			Citizen.Wait(0)
+            SetEntityCoords(Player, 1670.34, 2640.40, 45.56)
+            SetEntityHeading(Player, 39.11)
+			CurrentlyJailed = true
+			
+			while Time > 0 do
+				RemoveAllPedWeapons(Player, true)
+				SetEntityInvincible(Player, true)
+				if IsPedInAnyVehicle(Player, false) then
+					local Vehicle = GetVehiclePedIsIn(Player, false)
+					DeleteVehicle(Vehicle)
+					ClearPedTasksImmediately(Player)
+				end
+				Citizen.Wait(1000)
+				local Location = GetEntityCoords(Player, true)
+				local Distance = Vdist(1670.34, 2640.40, 45.56, Location['x'], Location['y'], Location['z'])
+				if Distance > 100 then
+					SetEntityCoords(Player, 1670.34, 2640.40, 45.56)
+                    SetEntityHeading(Player, 39.11)
+				end
+				
+				Time = Time - 1
+			end
+			
+			SetEntityCoords(Player, 1855.807, 2601.949, 45.323)
+            SetEntityHeading(Player, 265.61)
+			CurrentlyJailed = false
+			SetEntityInvincible(Player, false)
+			
+			TriggerServerEvent('SEM_JailMessage', -1, 'Judge', {86, 96, 252}, GetPlayerName(PlayerId()) ..' was released from Jail after ' .. OriginalJailTime .. ' seconds.')
+		end)
+	end
+end)
+
+
+
 RegisterCommand('coords', function(source, args, rawCommands)
     local Coords = GetEntityCoords(PlayerPedId())
     local Heading = GetEntityHeading(PlayerPedId())
 
-    TriggerEvent('chatMessage', 'Coords', {255, 255, 0}, '\nX: ' .. Coords.x .. '\nY: ' .. Coords.y .. '\nZ: ' .. Coords.z .. '\nH: ' .. Heading)
+    TriggerEvent('chatMessage', 'Coords', {255, 255, 0}, '\nX: ' .. Coords.x .. '\nY: ' .. Coords.y .. '\nZ: ' .. Coords.z .. '\nHeading: ' .. Heading)
 end)
 
 Citizen.CreateThread(function()

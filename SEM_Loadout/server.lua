@@ -2,7 +2,7 @@
 ───────────────────────────────────────────────────────────────
 
 	SEM_Loadout (server.lua) - Created by Scott M
-	Current Version: v1.0 (Dec 2019)
+	Current Version: v1.1 (Dec 2019)
 	
 	Support: https://semdevelopment.com/discord
 	
@@ -11,6 +11,27 @@
 	
 ───────────────────────────────────────────────────────────────
 ]]
+
+
+
+RegisterServerEvent('SEM_JailMessage')
+AddEventHandler('SEM_JailMessage', function(Target, Title, Colour, Message)
+	TriggerClientEvent('chatMessage', Target, Title, Colour, Message)
+end)
+
+RegisterServerEvent('SEM_Jail')
+AddEventHandler('SEM_Jail', function(ID, Time, Reason)
+	local Name = GetPlayerName(ID)
+	if Name ~= nil then
+		TriggerClientEvent('SEM_JailPlayer', ID, ID, Time, Reason)
+		TriggerEvent('SEM_JailMessage', -1, 'Judge', {86, 96, 252}, GetPlayerName(ID) .. ' has been Jailed for ' .. Time .. ' seconds.\nReason: ' .. Reason)
+		return
+	end
+	
+	TriggerEvent('SEM_JailMessage', source, 'System', {0, 0, 0}, 'Invalid Player ID')
+end)
+
+
 
 
 
@@ -33,11 +54,11 @@ Citizen.CreateThread(function()
 				if Data.Changes ~= '' then
 					print('\nChanges: ' .. Data.Changes)
 				end
-				print('\n--------------------------------------------------------------------------\n')
+				print('\n--------------------------------------------------------------------------\n^7')
 			elseif tonumber(CurrentVersion) > tonumber(Data.NewestVersion) then
 				print('^3Your version of SEM_Loadout is higher than the current version!^7')
 			else
-				print('^2SEM_Loadout is up to date!')
+				print('^2SEM_Loadout is up to date!^7')
 			end
 		else
 			print('^1SEM_Loadout Version Check Failed!^7')
