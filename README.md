@@ -9,9 +9,9 @@ SEM_Loadout was created using NativeUI [LUA]
 
 
 ### Information:
-Current Version: **v1.1**
+Current Version: **v1.2**
 
-Changes: **Improved Menu, Added Jail Functions & Updated Config File**
+Changes: **Added Permissions, Clearing Weapons & Updated Vehicle Deleters**
 
 Support/Discord: https://semdevelopment.com/discord
 
