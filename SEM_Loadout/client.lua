@@ -2,7 +2,7 @@
 ──────────────────────────────────────────────────────────────
 
 	SEM_Loadout (client.lua) - Created by Scott M
-	Current Version: v1.1 (Dec 2019)
+	Current Version: v1.2 (Feb 2020)
 	
 	Support: https://semdevelopment.com/discord
 	
@@ -20,7 +20,7 @@ Citizen.CreateThread(function()
     while true do
 		Citizen.Wait(0)
 		if Config.LEOMarkers then
-			if Config.DisplayArmoury then
+			if Config.DisplayArmoury and LEOArmouryRestrict() then
 				for _, Location in pairs(Config.ArmouryLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance) then
 						Marker(Location.x, Location.y, Location.z - 1)
@@ -56,6 +56,13 @@ Citizen.CreateThread(function()
 									end
 								end
 
+								local ClearWeapons = NativeUI.CreateItem('Return Weapons', '')
+								ArmouryMenu:AddItem(ClearWeapons)
+								ClearWeapons.Activated = function(ParentMenu, SelectedItem)
+									RemoveAllPedWeapons(GetPlayerPed(-1), true)
+									Notify('~r~Weapons Returned')
+								end
+
 								ArmouryMenu:Visible(not ArmouryMenu:Visible())
 								_MenuPool:RefreshIndex()
 							end
@@ -66,13 +73,13 @@ Citizen.CreateThread(function()
 
 
 
-			if Config.DisplayLocker then
+			if Config.DisplayLocker and LEOLockerRestrict() then
 				for _, Location in pairs(Config.LockerLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance) then
 						Marker(Location.x, Location.y, Location.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  0.75) then
-							NotifyHelp('~b~Locker Room~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
+							NotifyHelp('~b~Locker Room~w~, Press ' .. Config.ButtonHelp .. ' to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -106,13 +113,13 @@ Citizen.CreateThread(function()
 
 
 
-			if Config.DisplayGarage then
+			if Config.DisplayGarage and LEOGarageRestrict() then
 				for _, Location in pairs(Config.GarageLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.Marker.x, Location.Marker.y, Location.Marker.z - 1) <  Config.DisplayDistance) then
 						Marker(Location.Marker.x, Location.Marker.y, Location.Marker.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.Marker.x, Location.Marker.y, Location.Marker.z - 1) <  0.75) then
-							NotifyHelp('~b~Garage~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
+							NotifyHelp('~b~Garage~w~, Press ' .. Config.ButtonHelp .. ' to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -146,33 +153,32 @@ Citizen.CreateThread(function()
 
 
 
-			if Config.DisplayVehicleDeleters then
+			if Config.DisplayVehicleDeleters and LEODeleterRestrict() then
 				for _, Location in pairs(Config.VehicleDeleterLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance * 2) then
-						Marker(Location.x, Location.y, Location.z - 1)
-						
-						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
-							NotifyHelp('~b~Delete Vehicle~w~, Press ~' .. Config.ButtonHelp .. '~ to Delete')
+						if IsPedInAnyVehicle(PlayerPedId()) then
+							Marker(Location.x, Location.y, Location.z - 1)
+							
+							if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
+								NotifyHelp('~b~Delete Vehicle~w~, Press ' .. Config.ButtonHelp .. ' to Delete')
 
-							if IsPedInAnyVehicle(PlayerPedId()) then
-
-								if IsControlJustReleased(1, Config.Button) then
-									
-									if (IsPedSittingInAnyVehicle(PlayerPedId())) then 
-										local Vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-						
-										if (GetPedInVehicleSeat(Vehicle, -1) == PlayerPedId()) then 
-											SetEntityAsMissionEntity(Vehicle, true, true)
-											DeleteVehicle(Vehicle)
-						
-											if not (DoesEntityExist(vehicle)) then 
-												Notify('~r~Vehicle Deleted')
+									if IsControlJustReleased(1, Config.Button) then
+										
+										if (IsPedSittingInAnyVehicle(PlayerPedId())) then 
+											local Vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+							
+											if (GetPedInVehicleSeat(Vehicle, -1) == PlayerPedId()) then 
+												SetEntityAsMissionEntity(Vehicle, true, true)
+												DeleteVehicle(Vehicle)
+							
+												if not (DoesEntityExist(vehicle)) then 
+													Notify('~r~Vehicle Deleted')
+												end 
+											else 
+												Notify('You must be in the driver\'s seat!')
 											end 
-										else 
-											Notify('You must be in the driver\'s seat!')
-										end 
+										end
 									end
-								end
 							end
 						end
 					end
@@ -181,13 +187,13 @@ Citizen.CreateThread(function()
 
 
 
-			if Config.DisplayJail then
+			if Config.DisplayJail and LEOJailRestrict() then
 				for _, Location in pairs(Config.JailLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance) then
 						Marker(Location.x, Location.y, Location.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
-							NotifyHelp('~b~Jail~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
+							NotifyHelp('~b~Jail~w~, Press ' .. Config.ButtonHelp .. ' to Access')
 
 							if IsControlJustReleased(1, Config.Button) then
 								local ID = 0
@@ -249,13 +255,13 @@ Citizen.CreateThread(function()
 
 
 		if Config.FireMarkers then
-			if Config.DisplayLoadout then
+			if Config.DisplayLoadout and FireLoadoutRestrict() then
 				for _, Location in pairs(Config.LoadoutLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance) then
 						Marker(Location.x, Location.y, Location.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
-							NotifyHelp('~b~Equipment & Uniforms~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
+							NotifyHelp('~b~Equipment & Uniforms~w~, Press ' .. Config.ButtonHelp .. ' to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -276,6 +282,7 @@ Citizen.CreateThread(function()
 										for _, Item in pairs(Equipment) do
 											if Item.uniform then
 												SpawnPed(Item.uniform)
+												print('Uniform: ' .. tostring(Item.uniform))
 											end
 
 											if Item.weapon then
@@ -296,13 +303,13 @@ Citizen.CreateThread(function()
 				end
 			end
 
-			if Config.DisplayFireGarage then
+			if Config.DisplayFireGarage and FireGarageRestrict() then
 				for _, Location in pairs(Config.FireGarageLocations) do
 					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.Marker.x, Location.Marker.y, Location.Marker.z - 1) <  Config.DisplayDistance) then
 						Marker(Location.Marker.x, Location.Marker.y, Location.Marker.z - 1)
 						
 						if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.Marker.x, Location.Marker.y, Location.Marker.z - 1) <  0.75) then
-							NotifyHelp('~b~Garage~w~, Press ~' .. Config.ButtonHelp .. '~ to Access')
+							NotifyHelp('~b~Garage~w~, Press ' .. Config.ButtonHelp .. ' to Access')
 
 							_MenuPool:MouseControlsEnabled(false)
 							_MenuPool:ControlDisablingEnabled(false)
@@ -323,6 +330,40 @@ Citizen.CreateThread(function()
 
 								GarageMenu:Visible(not GarageMenu:Visible())
 								_MenuPool:RefreshIndex()
+							end
+						end
+					end
+				end
+			end
+
+
+
+			if Config.DisplayFireVehicleDeleters and FireDeleterRestrict() then
+				for _, Location in pairs(Config.FireVehicleDeleterLocations) do
+					if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  Config.DisplayDistance * 2) then
+						if IsPedInAnyVehicle(PlayerPedId()) then
+							Marker(Location.x, Location.y, Location.z - 1)
+							
+							if (GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), Location.x, Location.y, Location.z - 1) <  1.50) then
+								NotifyHelp('~b~Delete Vehicle~w~, Press ' .. Config.ButtonHelp .. ' to Delete')
+
+								if IsControlJustReleased(1, Config.Button) then
+										
+									if (IsPedSittingInAnyVehicle(PlayerPedId())) then 
+										local Vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
+							
+										if (GetPedInVehicleSeat(Vehicle, -1) == PlayerPedId()) then 
+											SetEntityAsMissionEntity(Vehicle, true, true)
+											DeleteVehicle(Vehicle)
+							
+											if not (DoesEntityExist(vehicle)) then 
+												Notify('~r~Vehicle Deleted')
+											end 
+										else 
+											Notify('You must be in the driver\'s seat!')
+										end 
+									end
+								end
 							end
 						end
 					end
@@ -393,4 +434,63 @@ end)
 
 Citizen.CreateThread(function()
 	TriggerEvent('chat:AddSuggestion', '/coords', 'Shows Current Player Coords and Heading')
+end)
+
+
+
+-- Permissions --
+ArmouryAce = false
+TriggerServerEvent('SEM_ArmouryPerms')
+RegisterNetEvent('SEM_ArmouryPermsResult')
+AddEventHandler('SEM_ArmouryPermsResult', function(Allowed)
+    ArmouryAce = Allowed
+end)
+
+LockerAce = false
+TriggerServerEvent('SEM_LockerPerms')
+RegisterNetEvent('SEM_LockerPermsResult')
+AddEventHandler('SEM_LockerPermsResult', function(Allowed)
+    LockerAce = Allowed
+end)
+
+GarageAce = false
+TriggerServerEvent('SEM_GaragePerms')
+RegisterNetEvent('SEM_GaragePermsResult')
+AddEventHandler('SEM_GaragePermsResult', function(Allowed)
+    GarageAce = Allowed
+end)
+
+DeleterAce = false
+TriggerServerEvent('SEM_DeleterPerms')
+RegisterNetEvent('SEM_DeleterPermsResult')
+AddEventHandler('SEM_DeleterPermsResult', function(Allowed)
+    DeleterAce = Allowed
+end)
+
+JailAce = false
+TriggerServerEvent('SEM_JailPerms')
+RegisterNetEvent('SEM_JailPermsResult')
+AddEventHandler('SEM_JailPermsResult', function(Allowed)
+    JailAce = Allowed
+end)
+
+LoadoutAce = false
+TriggerServerEvent('SEM_LoadoutPerms')
+RegisterNetEvent('SEM_LoadoutPermsResult')
+AddEventHandler('SEM_LoadoutPermsResult', function(Allowed)
+    LoadoutAce = Allowed
+end)
+
+FireGarageAce = false
+TriggerServerEvent('SEM_FireGaragePerms')
+RegisterNetEvent('SEM_FireGaragePermsResult')
+AddEventHandler('SEM_FireGaragePermsResult', function(Allowed)
+    FireGarageAce = Allowed
+end)
+
+FireDeleterAce = false
+TriggerServerEvent('SEM_FireDeleterPerms')
+RegisterNetEvent('SEM_FireDeleterPermsResult')
+AddEventHandler('SEM_FireDeleterPermsResult', function(Allowed)
+    FireDeleterAce = Allowed
 end)

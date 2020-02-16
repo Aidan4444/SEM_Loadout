@@ -2,7 +2,7 @@
 ───────────────────────────────────────────────────────────────
 
 	SEM_Loadout (config.lua) - Created by Scott M
-	Current Version: v1.1 (Dec 2019)
+	Current Version: v1.2 (Feb 2020)
 	
 	Support: https://semdevelopment.com/discord
 
@@ -21,7 +21,7 @@ Config.Button = 38
 
 --This determines what button will be shown in the help text
 --Default ~INPUT_PICKUP~  |  To change the button check out https://docs.fivem.net/game-references/controls/
-Config.ButtonHelp = 'INPUT_PICKUP'
+Config.ButtonHelp = '~INPUT_PICKUP~'
 
 --This determines what color the markers will be
 --Default = [255, 255, 255, 150]
@@ -29,7 +29,7 @@ Config.Colour = {r = 255, g = 255, b = 255, a = 150}
 
 --This determines what size the markers will be
 --Default = [1.15, 0.40]
-Config.Size = {w = 1.15, h = 0.40}
+Config.Size = {w = 1.25, h = 0.40}
 
 --This determines how close you need to be for the marker to be displayed
 --Default = 10
@@ -57,6 +57,11 @@ Config.FireMarkers = true
 
 --This determines if the armoury locations are displayed
 Config.DisplayArmoury = true
+
+--This determines who has access to the LEO Armoury Menu
+--!!! NOTE: If LEO Peds is selected, peds in the 'Config.LockerContents' will have access to the LEO Menu !!!
+--Everyone = 0 [Default] | LEO Peds = 1 | Ace Permissions = 2
+Config.ArmouryAccess = 0
 
 --This determines where the armoury markers are located
 --You can use the '/coords' command to get the coordinates
@@ -107,6 +112,10 @@ Config.ArmouryContents = {
 --This determines if the locker locations are displayed
 Config.DisplayLocker = true
 
+--This determines who has access to the LEO Locker Menu
+--Everyone = 0 [Default] | Ace Permissions = 1
+Config.LockerAccess = 0
+
 --This determines where the locker markers are located
 --You can use the '/coords' command to get the coordinates
 Config.LockerLocations = {
@@ -130,6 +139,11 @@ Config.LockerContents = {
 
 --This determines if the garage locations are displayed
 Config.DisplayGarage = true
+
+--This determines who has access to the LEO Garage Menu
+--!!! NOTE: If LEO Peds is selected, peds in the 'Config.LockerContents' will have access to the LEO Menu !!!
+--Everyone = 0 [Default] | LEO Peds = 1 | Ace Permissions = 2
+Config.GarageAccess = 0
 
 --This determines where the garage markers are located
 --You can use the '/coords' command to get the coordinates
@@ -167,6 +181,11 @@ Config.GarageContents = {
 --This determines if the vehicle deleters locations are displayed
 Config.DisplayVehicleDeleters = true
 
+--This determines who has access to the LEO Deleter Menu
+--!!! NOTE: If LEO Peds is selected, peds in the 'Config.LockerContents' will have access to the LEO Menu !!!
+--Everyone = 0 [Default] | LEO Peds = 1 | Ace Permissions = 2
+Config.DeleterAccess = 0
+
 --This determines where the vehicle deleter markers are located
 --You can use the '/coords' command to get the coordinates
 Config.VehicleDeleterLocations = {
@@ -177,6 +196,11 @@ Config.VehicleDeleterLocations = {
 
 --This determines if the jail locations are displayed
 Config.DisplayJail = true
+
+--This determines who has access to the LEO Jail Menu
+--!!! NOTE: If LEO Peds is selected, peds in the 'Config.LockerContents' will have access to the LEO Menu !!!
+--Everyone = 0 [Default] | LEO Peds = 1 | Ace Permissions = 2
+Config.JailAccess = 0
 
 --This determines what the lowest and highest time someone can be jailed for
 --Default Time | Min = 30  &  Max = 300
@@ -199,6 +223,10 @@ Config.JailLocations = {
 
 --This determines if the fire loadout locations are displayed
 Config.DisplayLoadout = true
+
+--This determines who has access to the Fire Loadout Menu
+--Everyone = 0 [Default] | Ace Permissions = 1
+Config.LoadoutAccess = 0
 
 --This determines where the fire loadout markers are located
 --You can use the '/coords' command to get the coordinates
@@ -235,8 +263,8 @@ Config.LoadoutContents = {
 		{weapon = 'weapon_hatchet'},
 	},
 
-	EMS = {
-		{uniform = 's_m_y_paramedic_01'},
+	['EMS'] = {
+		{uniform = 's_m_m_paramedic_01'},
 
 		{weapon = 'weapon_knife'},
 		{weapon = 'weapon_flashlight'},
@@ -251,6 +279,11 @@ Config.LoadoutContents = {
 
 --This determines if the garage locations are displayed
 Config.DisplayFireGarage = true
+
+--This determines who has access to the Fire Garage Menu
+--!!! NOTE: If Fire Peds is selected, peds in the 'Config.LoadoutContents' will have access to the Fire Menu !!!
+--Everyone = 0 [Default] | Fire Peds = 1 | Ace Permissions = 2
+Config.FireGarageAccess = 0
 
 --This determines where the garage markers are located
 --You can use the '/coords' command to get the coordinates
@@ -269,4 +302,20 @@ Config.FireGarageLocations = {
 Config.FireGarageContents = {
 	{name = 'Engine', spawncode = 'firetruk', extras = {}},
 	{name = 'Ambulance', spawncode = 'ambulance', extras = {}},
+}
+
+
+
+--This determines if the vehicle deleters locations are displayed
+Config.DisplayFireVehicleDeleters = true
+
+--This determines who has access to the Fire Deleter Menu
+--!!! NOTE: If Fire Peds is selected, peds in the 'Config.LoadoutContents' will have access to the Fire Menu !!!
+--Everyone = 0 [Default] | Fire Peds = 1 | Ace Permissions = 2
+Config.FireDeleterAccess = 0
+
+--This determines where the vehicle deleter markers are located
+--You can use the '/coords' command to get the coordinates
+Config.FireVehicleDeleterLocations = {
+	{x = 1713.70, y = 3600.21, z = 35.16} --Sandy Shores
 }

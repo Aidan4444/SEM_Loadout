@@ -2,7 +2,7 @@
 ─────────────────────────────────────────────────────────────────
 
 	SEM_Loadout (functions.lua) - Created by Scott M
-	Current Version: v1.1 (Dec 2019)
+	Current Version: v1.2 (Feb 2020)
 	
 	Support: https://semdevelopment.com/discord
 	
@@ -113,5 +113,154 @@ function SpawnVehicle(Veh, Name, Extras, x, y, z, h)
 end
 
 function DeleteVehicle(entity)
-    Citizen.InvokeNative( 0xEA386986E786A54F, Citizen.PointerValueIntInitialized(entity))
+    Citizen.InvokeNative(0xEA386986E786A54F, Citizen.PointerValueIntInitialized(entity))
+end
+
+
+
+
+
+function LEOArmouryRestrict()
+    if Config.ArmouryAccess == 0 then
+        return true
+    elseif Config.ArmouryAccess == 1 then
+        local Ped = GetEntityModel(GetPlayerPed(-1))
+
+        for _, LEOPeds in pairs(Config.LockerContents) do
+            local AllowedPed = GetHashKey(LEOPeds.uniform)
+
+            if Ped == AllowedPed then
+                return true
+            end
+        end
+    elseif Config.ArmouryAccess == 2 then
+        return ArmouryAce
+    else
+        return true
+    end
+end
+
+function LEOLockerRestrict()
+    if Config.LockerAccess == 0 then
+        return true
+    elseif Config.LockerAccess == 1 then
+        return LockerAce
+    else
+        return true
+    end
+end
+
+function LEOGarageRestrict()
+    if Config.GarageAccess == 0 then
+        return true
+    elseif Config.GarageAccess == 1 then
+        local Ped = GetEntityModel(GetPlayerPed(-1))
+
+        for _, LEOPeds in pairs(Config.LockerContents) do
+            local AllowedPed = GetHashKey(LEOPeds.uniform)
+
+            if Ped == AllowedPed then
+                return true
+            end
+        end
+    elseif Config.GarageAccess == 2 then
+        return GarageAce
+    else
+        return true
+    end
+end
+
+function LEODeleterRestrict()
+    if Config.DeleterAccess == 0 then
+        return true
+    elseif Config.DeleterAccess == 1 then
+        local Ped = GetEntityModel(GetPlayerPed(-1))
+
+        for _, LEOPeds in pairs(Config.LockerContents) do
+            local AllowedPed = GetHashKey(LEOPeds.uniform)
+
+            if Ped == AllowedPed then
+                return true
+            end
+        end
+    elseif Config.DeleterAccess == 2 then
+        return DeleterAce
+    else
+        return true
+    end
+end
+
+function LEOJailRestrict()
+    if Config.JailAccess == 0 then
+        return true
+    elseif Config.JailAccess == 1 then
+        local Ped = GetEntityModel(GetPlayerPed(-1))
+
+        for _, LEOPeds in pairs(Config.LockerContents) do
+            local AllowedPed = GetHashKey(LEOPeds.uniform)
+
+            if Ped == AllowedPed then
+                return true
+            end
+        end
+    elseif Config.JailAccess == 2 then
+        return JailAce
+    else
+        return true
+    end
+end
+
+
+function FireLoadoutRestrict()
+    if Config.LoadoutAccess == 0 then
+        return true
+    elseif Config.LoadoutAccess == 1 then
+        return LoadoutAce
+    else
+        return true
+    end
+end
+
+function FireGarageRestrict()
+    if Config.FireGarageAccess == 0 then
+        return true
+    elseif Config.FireGarageAccess == 1 then
+        local Ped = GetEntityModel(GetPlayerPed(-1))
+
+        for _, FireAreas in pairs(Config.LoadoutContents) do
+            for _, FirePeds in pairs(FireAreas) do
+                local AllowedPed = GetHashKey(FirePeds.uniform)
+    
+                if Ped == AllowedPed then
+                    return true
+                end
+            end
+        end
+    elseif Config.FireGarageAccess == 2 then
+        return FireGarageAce
+    else
+        return true
+    end
+end
+
+function FireDeleterRestrict()
+    if Config.DeleterAccess == 0 then
+        return true
+    elseif Config.DeleterAccess == 1 then
+        local Ped = GetEntityModel(GetPlayerPed(-1))
+
+        for _, FireAreas in pairs(Config.LoadoutContents) do
+            for _, FirePeds in pairs(FireAreas) do
+                local AllowedPed = GetHashKey(FirePeds.uniform)
+    
+                if Ped == AllowedPed then
+                    return true
+                end
+            end
+        end
+    elseif Config.DeleterAccess == 2 then
+        return FireDeleterAce
+    else
+        return true
+    end
 end

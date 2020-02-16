@@ -2,7 +2,7 @@
 ───────────────────────────────────────────────────────────────
 
 	SEM_Loadout (server.lua) - Created by Scott M
-	Current Version: v1.1 (Dec 2019)
+	Current Version: v1.2 (Feb 2020)
 	
 	Support: https://semdevelopment.com/discord
 	
@@ -29,6 +29,82 @@ AddEventHandler('SEM_Jail', function(ID, Time, Reason)
 	end
 	
 	TriggerEvent('SEM_JailMessage', source, 'System', {0, 0, 0}, 'Invalid Player ID')
+end)
+
+
+
+
+
+RegisterServerEvent('SEM_ArmouryPerms')
+AddEventHandler('SEM_ArmouryPerms', function()
+    if IsPlayerAceAllowed(source, 'sem.leo-armoury') then
+		TriggerClientEvent('SEM_ArmouryPermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_ArmouryPermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_LockerPerms')
+AddEventHandler('SEM_LockerPerms', function()
+    if IsPlayerAceAllowed(source, 'sem.leo-locker') then
+		TriggerClientEvent('SEM_LockerPermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_LockerPermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_GaragePerms')
+AddEventHandler('SEM_GaragePerms', function()
+    if IsPlayerAceAllowed(source, 'sem.leo-garage') then
+		TriggerClientEvent('SEM_GaragePermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_GaragePermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_DeleterPerms')
+AddEventHandler('SEM_DeleterPerms', function()
+    if IsPlayerAceAllowed(source, 'sem.leo-deleter') then
+		TriggerClientEvent('SEM_DeleterPermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_DeleterPermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_JailPerms')
+AddEventHandler('SEM_JailPerms', function()
+    if IsPlayerAceAllowed(source, 'sem.leo-jail') then
+		TriggerClientEvent('SEM_JailPermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_JailPermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_LoadoutPerms')
+AddEventHandler('SEM_LoadoutPerms', function()
+    if IsPlayerAceAllowed(source, 'sem.fire-loadout') then
+		TriggerClientEvent('SEM_LoadoutPermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_LoadoutPermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_FireGaragePerms')
+AddEventHandler('SEM_FireGaragePerms', function()
+    if IsPlayerAceAllowed(source, 'sem.fire-garage') then
+		TriggerClientEvent('SEM_FireGaragePermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_FireGaragePermsResult', source, false)
+	end
+end)
+
+RegisterServerEvent('SEM_FireDeleterPerms')
+AddEventHandler('SEM_FireDeleterPerms', function()
+    if IsPlayerAceAllowed(source, 'sem.fire-deleter') then
+		TriggerClientEvent('SEM_FireDeleterPermsResult', source, true)
+	else
+		TriggerClientEvent('SEM_FireDeleterPermsResult', source, false)
+	end
 end)
 
 
