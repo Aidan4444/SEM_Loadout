@@ -11,7 +11,7 @@ SEM_Loadout was created using NativeUI [LUA]
 ### Information:
 Current Version: **v1.2**
 
-Changes: **Added Permissions, Clearing Weapons & Updated Vehicle Deleters**
+Changes: **Added Permissions, Clearing Weapons, Updated Vehicle Deleters & Config File has been updated**
 
 Support/Discord: https://semdevelopment.com/discord
 
