@@ -1,7 +1,7 @@
 --[[
 ──────────────────────────────────────────────────────────────────
 
-	SEM_Loadout (__resource.lua) - Created by Scott M
+	SEM_Loadout (fxmanifest.lua) - Created by Scott M
 	Current Version: v1.2 (Feb 2020)
 	
 	Support: https://semdevelopment.com/discord
@@ -14,7 +14,8 @@
 
 
 
-resource_manifest_version '05cfa83c-a124-4cfa-a768-c24a5811d8f9'
+fx_version 'bodacious'
+games {'gta5'}
 
 title 'SEM_Loadout'
 description 'LEO & Fire Loadout Locations'
@@ -22,7 +23,7 @@ author 'Scott M [SEM Development]'
 version 'v1.2'
 
 client_scripts {
-	'dependencies/NativeUI.lua',
+    'dependencies/NativeUI.lua',
     'client.lua',
     'config.lua',
     'functions.lua',
