@@ -153,11 +153,12 @@ Config.GarageLocations = {
 
 --[[
     EXAMPLE: 
-	{name = 'a', spawncode = 'b', extras = {c, c}},
+	{name = 'a', spawncode = 'b', extras = {c, c}, livery = d},
     ────────────────────────────────────────────────────────────────
     'a' is the title of the of the Vehicle
 	'b' is the spawncode of the vehicle
 	'c' is any extras which you would like added by default, these are numbers
+	'd' is the livery number you would like applied to the vehicle by default
 ]]
 Config.GarageContents = {
 	['LSPD'] = {
@@ -293,11 +294,12 @@ Config.FireGarageLocations = {
 
 --[[
     EXAMPLE: 
-	{name = 'a', spawncode = 'b', extras = {c, c}},
+	{name = 'a', spawncode = 'b', extras = {c, c}, livery = d},
     ────────────────────────────────────────────────────────────────
     'a' is the title of the of the Vehicle
 	'b' is the spawncode of the vehicle
 	'c' is any extras which you would like added by default, these are numbers
+	'd' is the livery number you would like applied to the vehicle by default
 ]]
 Config.FireGarageContents = {
 	{name = 'Engine', spawncode = 'firetruk', extras = {}},
