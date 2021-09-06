@@ -76,7 +76,7 @@ function SpawnPed(Hash)
     end)
 end
 
-function SpawnVehicle(Veh, Name, Extras, x, y, z, h)
+function SpawnVehicle(Veh, Name, Extras, Livery, x, y, z, h)
     local Ped = GetPlayerPed( -1 )
 
     local WaitTime = 0
@@ -105,6 +105,10 @@ function SpawnVehicle(Veh, Name, Extras, x, y, z, h)
         Notify('~b~Vehicle Spawned: ~g~' .. Name)
     else
         Notify('~b~Vehicle Spawned!')
+	end
+	
+	if Livery then
+		SetVehicleLivery(Vehicle, Livery)
 	end
 	
 	for _, Extra in pairs(Extras) do
