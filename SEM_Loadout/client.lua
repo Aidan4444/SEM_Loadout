@@ -137,7 +137,7 @@ Citizen.CreateThread(function()
 										local GarageItem = NativeUI.CreateItem(Vehicle.name, '')
 										GarageSubMenu:AddItem(GarageItem)
 										GarageItem.Activated = function(ParentMenu, SelectedItem)
-											SpawnVehicle(Vehicle.spawncode, Vehicle.name, Vehicle.extras, Location.Spawn.x, Location.Spawn.y, Location.Spawn.z, Location.Spawn.h)
+											SpawnVehicle(Vehicle.spawncode, Vehicle.name, Vehicle.extras, Vehicle.livery, Location.Spawn.x, Location.Spawn.y, Location.Spawn.z, Location.Spawn.h)
 											_MenuPool:CloseAllMenus()
 										end
 									end
@@ -323,7 +323,7 @@ Citizen.CreateThread(function()
 									local GarageItem = NativeUI.CreateItem(Vehicle.name, '')
 									GarageMenu:AddItem(GarageItem)
 									GarageItem.Activated = function(ParentMenu, SelectedItem)
-										SpawnVehicle(Vehicle.spawncode, Vehicle.name, Vehicle.extras, Location.Spawn.x, Location.Spawn.y, Location.Spawn.z, Location.Spawn.h)
+										SpawnVehicle(Vehicle.spawncode, Vehicle.name, Vehicle.extras, Vehicle.livery, Location.Spawn.x, Location.Spawn.y, Location.Spawn.z, Location.Spawn.h)
 										_MenuPool:CloseAllMenus()
 									end
 								end
